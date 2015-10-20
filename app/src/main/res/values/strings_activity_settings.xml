@@ -1,0 +1,46 @@
+<resources>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="pref_header_data_id">General Settings</string>
+
+    <string name="pref_title_data_id">Phone ID</string>
+
+    <string name="pref_header_data_sync">GPS Settings</string>
+
+    <string name="pref_title_sync_frequency">GPS sync frequency</string>
+
+    <string-array name="pref_sync_frequency_titles">
+        <item>1 second</item>
+        <item>3 seconds</item>
+        <item>10 seconds</item>
+        <item>1 minute</item>
+        <item>5 minutes</item>
+    </string-array>
+
+    <string-array name="pref_sync_frequency_values">
+        <item>1000</item>
+        <item>3000</item>
+        <item>10000</item>
+        <item>60000</item>
+        <item>300000</item>
+    </string-array>
+
+    <string name="pref_title_sync_distance">GPS sync distance</string>
+
+    <string-array name="pref_sync_distance_titles">
+        <item>1 meter</item>
+        <item>2 meters</item>
+        <item>5 meters</item>
+        <item>20 meters</item>
+        <item>100 meters</item>
+    </string-array>
+
+    <string-array name="pref_sync_distance_values">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>20</item>
+        <item>100</item>
+    </string-array>
+
+</resources>
