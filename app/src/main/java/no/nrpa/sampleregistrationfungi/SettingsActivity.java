@@ -1,4 +1,4 @@
-package no.nrpa.sampleregistration;
+package no.nrpa.sampleregistrationfungi;
 
 import android.annotation.TargetApi;
 import android.content.Context;

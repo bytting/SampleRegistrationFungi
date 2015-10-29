@@ -2,11 +2,11 @@
 
     <!-- These settings headers are only used on tablets. -->
     <header
-        android:fragment="no.nrpa.sampleregistration.SettingsActivity$DataIdPreferenceFragment"
+        android:fragment="no.nrpa.sampleregistrationfungi.SettingsActivity$DataIdPreferenceFragment"
         android:title="@string/pref_header_data_id" />
 
     <header
-        android:fragment="no.nrpa.sampleregistration.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="no.nrpa.sampleregistrationfungi.SettingsActivity$DataSyncPreferenceFragment"
         android:title="@string/pref_header_data_sync" />
 
 </preference-headers>

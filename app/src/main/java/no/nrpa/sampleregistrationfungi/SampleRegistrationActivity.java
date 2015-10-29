@@ -13,7 +13,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // CONTRIBUTORS AND COPYRIGHT HOLDERS (c) 2015:
 // Dag Robøle (dag D0T robole AT gmail D0T com)
 
-package no.nrpa.sampleregistration;
+package no.nrpa.sampleregistrationfungi;
 
 import android.Manifest;
 import android.content.SharedPreferences;
@@ -494,13 +494,13 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     }
 
     public File getProjectDir() {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "sampleregistration/projects");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "sampleregistrationfungi/projects");
         file.mkdirs();
         return file;
     }
 
     public File getConfigDir() {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "sampleregistration/config");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "sampleregistrationfungi/config");
         file.mkdirs();
         return file;
     }
