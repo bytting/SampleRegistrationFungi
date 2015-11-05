@@ -13,6 +13,9 @@
     <string name="next_sample_information">Next sample information</string>
     <string name="id">ID</string>
     <string name="sample_type">Sample type</string>
+    <string name="location">Location</string>
+    <string name="location_type">Location Type</string>
+    <string name="adjacent_hardwoods">Treslag i umiddelbar nærhet</string>
     <string name="value">Value</string>
     <string name="unit">Unit</string>
     <string name="station">Station</string>

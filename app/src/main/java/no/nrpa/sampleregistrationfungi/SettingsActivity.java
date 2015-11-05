@@ -132,6 +132,8 @@ public class SettingsActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.pref_data_app);
 
             bindPreferenceSummaryToValue(findPreference("data_id"));
+            bindPreferenceSummaryToValue(findPreference("collector"));
+            bindPreferenceSummaryToValue(findPreference("collector_address"));
         }
     }
 

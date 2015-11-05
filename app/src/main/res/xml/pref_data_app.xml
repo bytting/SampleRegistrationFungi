@@ -6,4 +6,14 @@
         android:title="@string/pref_title_data_id"
         android:defaultValue="" />
 
+    <EditTextPreference
+        android:key="collector"
+        android:title="@string/pref_title_collector"
+        android:defaultValue="" />
+
+    <EditTextPreference
+        android:key="collector_address"
+        android:title="@string/pref_title_collector_address"
+        android:defaultValue="" />
+
 </PreferenceScreen>

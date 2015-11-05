@@ -2,16 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".SampleRegistrationActivity">
 
     <ViewSwitcher
+        android:id="@+id/viewSwitcher"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/viewSwitcher">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,26 +19,27 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:editable="false"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/new_project"/>
+                android:textColor="#0054BB"
+                android:text="@string/new_project" />
 
             <EditText
+                android:id="@+id/etNewProj"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:maxLength="64"
-                android:textColor="#073642"
-                android:textColorHint="#93a1a1"
                 android:hint="@string/project_name"
-                android:id="@+id/etNewProj"/>
+                android:maxLength="64"
+                android:singleLine="true"
+                android:textColor="#073642"
+                android:textColorHint="#93a1a1" />
 
             <ListView
+                android:id="@+id/listView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listView"/>
+                android:layout_height="match_parent" />
         </LinearLayout>
 
         <FrameLayout
@@ -46,134 +47,130 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvProjName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
-                    android:textColor="#073642"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/tvProjName"/>
+                    android:textColor="#073642" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
                     android:layout_marginTop="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#0054BB"
-                    android:text="@string/last_gps_information_received"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
                     android:editable="false"
-                    android:textColorHint="#2aa198"
-                    android:hint="@string/provider_not_available"
+                    android:text="@string/last_gps_information_received"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2aa198"
-                    android:id="@+id/tvCurrentProvider"/>
+                    android:textColor="#0054BB" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:editable="false"
-                    android:textColorHint="#2aa198"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2aa198"
-                    android:id="@+id/tvCurrentFix"/>
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCurrentProvider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:editable="false"
+                        android:hint="@string/provider_not_available"
+                        android:textColor="#2aa198"
+                        android:textColorHint="#2aa198" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentFix"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:editable="false"
+                        android:textColor="#2aa198"
+                        android:textColorHint="#2aa198" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentAcc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:editable="false"
+                        android:textColor="#2aa198"
+                        android:textColorHint="#2aa198" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:editable="false"
-                    android:textColorHint="#2aa198"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2aa198"
-                    android:id="@+id/tvCurrentAcc"/>
-
-            </LinearLayout>
-
-                <TextView
+                    android:id="@+id/tvLastDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
-                    android:textColorHint="#2aa198"
                     android:hint="@string/last_gps_date_not_available"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#2aa198"
-                    android:id="@+id/tvLastDate"/>
+                    android:textColorHint="#2aa198" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
-                    android:layout_marginRight="5dp"
-                    android:text="@string/latitude"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2aa198" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:editable="false"
+                        android:text="@string/latitude"
+                        android:textColor="#2aa198" />
+
+                    <TextView
+                        android:id="@+id/tvCurrentLatitude"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:editable="false"
+                        android:hint="@string/last_gps_latitude_not_available"
+                        android:textColor="#2aa198"
+                        android:textColorHint="#2aa198" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
-                    android:textColorHint="#2aa198"
-                    android:hint="@string/last_gps_latitude_not_available"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2aa198"
-                    android:id="@+id/tvCurrentLatitude"/>
-            </LinearLayout>
+                    android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:editable="false"
+                        android:text="@string/longitude"
+                        android:textColor="#2aa198" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:editable="false"
-                    android:text="@string/longitude"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2aa198" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:editable="false"
-                    android:textColorHint="#2aa198"
-                    android:hint="@string/last_gps_longitude_not_available"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#2aa198"
-                    android:id="@+id/tvCurrentLongitude"/>
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvCurrentLongitude"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:editable="false"
+                        android:hint="@string/last_gps_longitude_not_available"
+                        android:textColor="#2aa198"
+                        android:textColorHint="#2aa198" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:editable="false"
+                    android:text="@string/next_sample_information"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#0054BB"
-                    android:text="@string/next_sample_information"/>
+                    android:textColor="#0054BB" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -186,107 +183,175 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:editable="false"
-                        android:textColor="#073642"
                         android:text="@string/id"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:textColor="#073642" />
 
                     <TextView
+                        android:id="@+id/tvDataId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:editable="false"
-                        android:textColor="#073642"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:id="@+id/tvDataId"/>
+                        android:textColor="#073642" />
 
                     <TextView
+                        android:id="@+id/tvNextId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:editable="false"
-                        android:textColor="#073642"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:id="@+id/tvNextId"/>
+                        android:textColor="#073642" />
                 </LinearLayout>
 
                 <AutoCompleteTextView
+                    android:id="@+id/etNextSampleType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:singleLine="true"
-                    android:maxLength="64"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1"
                     android:hint="@string/sample_type"
                     android:imeOptions="actionNext"
-                    android:nextFocusDown="@+id/etMeasurementValue"
-                    android:id="@+id/etNextSampleType"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:singleLine="true"
-                        android:maxLength="64"
-                        android:textColor="#073642"
-                        android:textColorHint="#93a1a1"
-                        android:hint="@string/value"
-                        android:nextFocusDown="@+id/etMeasurementUnit"
-                        android:id="@+id/etMeasurementValue"/>
-
-                    <AutoCompleteTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:singleLine="true"
-                        android:maxLength="64"
-                        android:textColor="#073642"
-                        android:textColorHint="#93a1a1"
-                        android:hint="@string/unit"
-                        android:imeOptions="actionNext"
-                        android:id="@+id/etMeasurementUnit"/>
-                </LinearLayout>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
                     android:maxLength="64"
-                    android:minWidth="100dp"
+                    android:singleLine="true"
                     android:textColor="#073642"
-                    android:textColorHint="#93a1a1"
-                    android:hint="@string/station"
-                    android:id="@+id/etStation"/>
+                    android:textColorHint="#93a1a1" />
 
-                <EditText
+                <AutoCompleteTextView
+                    android:id="@+id/etNextLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="@string/location"
+                    android:imeOptions="actionNext"
+                    android:maxLength="64"
                     android:singleLine="true"
+                    android:textColor="#073642"
+                    android:textColorHint="#93a1a1" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/etNextLocationType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="@string/location_type"
+                    android:imeOptions="actionNext"
+                    android:maxLength="64"
+                    android:singleLine="true"
+                    android:textColor="#073642"
+                    android:textColorHint="#93a1a1" />
+
+                <no.nrpa.sampleregistrationfungi.MultiSpinner
+                    android:id="@+id/etNextAdjacentHardwoods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:textColor="#073642" />
+
+                <EditText
+                    android:id="@+id/etNextComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/comment"
                     android:maxLength="128"
                     android:minWidth="100dp"
+                    android:singleLine="true"
                     android:textColor="#073642"
-                    android:textColorHint="#93a1a1"
+                    android:textColorHint="#93a1a1" />
+
+                <EditText
+                    android:id="@+id/etNextComment1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:hint="@string/comment"
-                    android:id="@+id/etNextComment"/>
+                    android:maxLength="128"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642"
+                    android:textColorHint="#93a1a1" />
+
+                <EditText
+                    android:id="@+id/etNextComment2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/comment"
+                    android:maxLength="128"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642"
+                    android:textColorHint="#93a1a1" />
+
+                <EditText
+                    android:id="@+id/etNextComment3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/comment"
+                    android:maxLength="128"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642"
+                    android:textColorHint="#93a1a1" />
+
+                <EditText
+                    android:id="@+id/etNextComment4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/comment"
+                    android:maxLength="128"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642"
+                    android:textColorHint="#93a1a1" />
+
+                <EditText
+                    android:id="@+id/etNextComment5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/comment"
+                    android:maxLength="128"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642"
+                    android:textColorHint="#93a1a1" />
+
+                <EditText
+                    android:id="@+id/etNextComment6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/comment"
+                    android:maxLength="128"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642"
+                    android:textColorHint="#93a1a1" />
+
+                <EditText
+                    android:id="@+id/etNextComment7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/comment"
+                    android:maxLength="128"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642"
+                    android:textColorHint="#93a1a1" />
+
+
             </LinearLayout>
 
+        </ScrollView>
+
             <Button
+                android:id="@+id/btnBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|left"
-                android:id="@+id/btnBack"
-                android:text="@string/back"/>
+                android:text="@string/back" />
 
             <Button
+                android:id="@+id/btnNextId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
-                android:id="@+id/btnNextId"
-                android:text="@string/store_next_sample"/>
+                android:text="@string/store_next_sample" />
+
         </FrameLayout>
     </ViewSwitcher>
 </RelativeLayout>

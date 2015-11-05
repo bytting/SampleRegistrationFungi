@@ -21,7 +21,6 @@ import android.graphics.Color;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +35,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,14 +54,17 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.LineNumberReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -76,11 +80,12 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     private String locProvider;
     private boolean providerEnabled;
     private TextView tvProjName, tvCurrProvider, tvCurrFix, tvCurrAcc, tvCurrGPSDate, tvCurrLat, tvCurrLon, tvDataID, tvNextID;
-    private EditText etStation, etMeasurementValue, etNextComment;
-    private AutoCompleteTextView etNextSampleType, etMeasurementUnit;
+    private EditText etNextComment;
+    private AutoCompleteTextView etNextSampleType, etNextLocation, etNextLocationType;
+    private MultiSpinner etNextAdjacentHardwoods;
     private File projDir, cfgDir;
     private int nextId;
-    private String dataId;
+    private String collector, collectorAddress, dataId;
     private long syncFrequency;
     private float syncDistance;
     private int nSatellites;
@@ -97,6 +102,11 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
         try {
             //getWindow().getDecorView().setBackgroundColor(Color.parseColor("#fdf6e3"));
+
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int winWidth = displaymetrics.widthPixels;
+            int winHeight = displaymetrics.heightPixels;
 
             ActionBar actionBar = getSupportActionBar();
             if(actionBar != null) {
@@ -145,9 +155,9 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             tvDataID = (TextView)findViewById(R.id.tvDataId);
             tvNextID = (TextView)findViewById(R.id.tvNextId);
             etNextSampleType = (AutoCompleteTextView)findViewById(R.id.etNextSampleType);
-            etStation = (EditText)findViewById(R.id.etStation);
-            etMeasurementValue = (EditText)findViewById(R.id.etMeasurementValue);
-            etMeasurementUnit = (AutoCompleteTextView)findViewById(R.id.etMeasurementUnit);
+            etNextLocation = (AutoCompleteTextView)findViewById(R.id.etNextLocation);
+            etNextLocationType = (AutoCompleteTextView)findViewById(R.id.etNextLocationType);
+            etNextAdjacentHardwoods = (MultiSpinner)findViewById(R.id.etNextAdjacentHardwoods);
             etNextComment = (EditText)findViewById(R.id.etNextComment);
 
             ArrayList<String> sampleTypes = new ArrayList<String>();
@@ -164,22 +174,79 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 etNextSampleType.setAdapter(adapter);
             }
 
-            ArrayList<String> units = new ArrayList<String>();
-            file = new File (cfgDir, "units.txt");
-            if(file.exists()) {
-                String line;
-                BufferedReader buf = new BufferedReader(new FileReader(file));
-                while ((line = buf.readLine()) != null) {
-                    units.add(line);
-                }
-                buf.close();
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, units);
-                etMeasurementUnit.setAdapter(adapter);
+            ArrayList<String> locations = new ArrayList<String>();
+            file = new File (cfgDir, "locations.txt");
+            if(!file.exists()) {
+                file.createNewFile();
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                writer.write("Skrøylå/Fossmark\n");
+                writer.write("Ukjent\n");
+                writer.close();
             }
+
+            String line;
+            BufferedReader buf = new BufferedReader(new FileReader(file));
+            while ((line = buf.readLine()) != null) {
+                locations.add(line);
+            }
+            buf.close();
+            ArrayAdapter<String> adapterLocations = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, locations);
+            etNextLocation.setAdapter(adapterLocations);
+
+            ArrayList<String> locationTypes = new ArrayList<String>();
+            file = new File (cfgDir, "location_types.txt");
+            if(!file.exists()) {
+                file.createNewFile();
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                writer.write("Fjellbeite\n");
+                writer.write("Kysthei\n");
+                writer.write("Myr\n");
+                writer.write("Barskog\n");
+                writer.write("Løvskog\n");
+                writer.write("Fjellskog\n");
+                writer.write("Snaufjellet\n");
+                writer.write("Ukjent\n");
+                writer.close();
+            }
+
+            buf = new BufferedReader(new FileReader(file));
+            while ((line = buf.readLine()) != null) {
+                locationTypes.add(line);
+            }
+            buf.close();
+
+            ArrayAdapter<String> adapterLocationTypes = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, locationTypes);
+            etNextLocationType.setAdapter(adapterLocationTypes);
+
+            ArrayList<String> adjacentHardwoods = new ArrayList<String>();
+            file = new File (cfgDir, "adjacent_hardwoods.txt");
+            if(!file.exists()) {
+                file.createNewFile();
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                writer.write("Gran\n");
+                writer.write("Furu\n");
+                writer.write("Bjørk\n");
+                writer.write("Osp\n");
+                writer.write("Rogn\n");
+                writer.write("Annet\n");
+                writer.close();
+            }
+
+            buf = new BufferedReader(new FileReader(file));
+            while ((line = buf.readLine()) != null) {
+                adjacentHardwoods.add(line);
+            }
+            buf.close();
+
+            etNextAdjacentHardwoods.setItems(adjacentHardwoods, "", new MultiSpinner.MultiSpinnerListener() {
+                @Override
+                public void onItemsSelected(boolean[] selected) {}
+            });
 
             // Load preferences
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            collector = prefs.getString("collector", "");
+            collectorAddress = prefs.getString("collector_address", "");
             dataId = prefs.getString("data_id", "");
             String strSyncFrequency = prefs.getString("sync_frequency", "3000");
             String strSyncDistance = prefs.getString("sync_distance", "2");
@@ -299,27 +366,13 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String currLon = tvCurrLon.getText().toString().trim();
                 String dataID = tvDataID.getText().toString().trim();
                 String nextID = tvNextID.getText().toString().trim();
-                String station = etStation.getText().toString().trim();
-                String value = etMeasurementValue.getText().toString().trim();
-                String unit = etMeasurementUnit.getText().toString().trim();
-                if(value.length() > 0) {
-                    try {
-                        fValue = Float.parseFloat(value);
-                    } catch (NumberFormatException ex) {
-                        Toast.makeText(SampleRegistrationActivity.this, ErrorString("Invalid value format"), Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    if(unit.length() < 1) {
-                        Toast.makeText(SampleRegistrationActivity.this, ErrorString("Missing unit"), Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                }
+                String location = etNextLocation.getText().toString().trim();
+                String locationType = etNextLocationType.getText().toString().trim();
                 String sampleComment = etNextComment.getText().toString().trim();
                 String nSats = String.valueOf(nSatellites);
                 String nAcc = String.valueOf(accuracy);
 
-                String line = dataID + "|" + projName + "|" + nextID + "|" + strDateISO + "|" + currLat + "|" + currLon + "|" + station + "|" + sampleType + "|" + value + "|" + unit + "|" + nSats + "|" + nAcc + "|" + sampleComment + "\n";
+                String line = dataID + "|" + collector + "|" + collectorAddress + "|" + projName + "|" + nextID + "|" + strDateISO + "|" + currLat + "|" + currLon + "|" + sampleType + "|" + location + "|" + locationType + "|" + nSats + "|" + nAcc + "|" + sampleComment + "\n";
 
                 File file = new File (projDir, tvProjName.getText().toString() + ".txt");
                 FileOutputStream out = new FileOutputStream(file, true);
@@ -346,6 +399,18 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             if(dataId.trim().length() < 1)
             {
                 Toast.makeText(SampleRegistrationActivity.this, ErrorString("You must add a Phone ID under settings"), Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if(collector.trim().length() < 1)
+            {
+                Toast.makeText(SampleRegistrationActivity.this, ErrorString("You must add a collector name under settings"), Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if(collectorAddress.trim().length() < 1)
+            {
+                Toast.makeText(SampleRegistrationActivity.this, ErrorString("You must add a collector address under settings"), Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -524,4 +589,12 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+    /*@Override
+    public void onItemsSelected(boolean[] selected) {
+        for(int i=0; i<selected.length; i++) {
+            if(selected[i])
+                Log.d("", etNextAdjacentHardwoods.getItems().get(i));
+        }
+    }*/
 }

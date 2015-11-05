@@ -5,6 +5,10 @@
 
     <string name="pref_title_data_id">Phone ID</string>
 
+    <string name="pref_title_collector">Collector</string>
+
+    <string name="pref_title_collector_address">Collector Address</string>
+
     <string name="pref_header_data_sync">GPS Settings</string>
 
     <string name="pref_title_sync_frequency">GPS sync frequency</string>
