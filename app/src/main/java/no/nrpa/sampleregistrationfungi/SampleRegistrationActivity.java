@@ -36,7 +36,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,8 +80,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     private LocationManager locManager;
     private String locProvider;
     private boolean providerEnabled;
-    private TextView tvProjName, tvCurrProvider, tvCurrFix, tvCurrAcc, tvCurrGPSDate, tvCurrLat, tvCurrLon, tvDataID, tvNextID;
-    private EditText etNextGrass, etNextHerbs, etNextHeather, etNextComment;
+    private TextView tvProjName, tvCurrProvider, tvCurrFix, tvCurrAcc, tvCurrGPSDate, tvCurrLat, tvCurrLon, tvCurrentAboveSeaLevel, tvDataID, tvNextID;
+    private EditText etNextGrass, etNextHerbs, etNextHeather, etNextComment, etNextWeight;
     private AutoCompleteTextView etNextSampleType, etNextLocation;
     private Spinner etNextLocationType, etNextDensity;
     private MultiSpinner etNextAdjacentHardwoods;
@@ -126,7 +125,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
             if(!isExternalStorageWritable())
             {
-                Toast.makeText(this, "Access to external storage denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Tilgang til ekstern lagring avvist", Toast.LENGTH_SHORT).show();
                 exitApp();
             }
 
@@ -161,6 +160,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             tvCurrGPSDate = (TextView) findViewById(R.id.tvLastDate);
             tvCurrLat = (TextView) findViewById(R.id.tvCurrentLatitude);
             tvCurrLon = (TextView) findViewById(R.id.tvCurrentLongitude);
+            tvCurrentAboveSeaLevel = (TextView) findViewById(R.id.tvCurrentAboveSeaLevel);
             tvDataID = (TextView)findViewById(R.id.tvDataId);
             tvNextID = (TextView)findViewById(R.id.tvNextId);
             etNextSampleType = (AutoCompleteTextView)findViewById(R.id.etNextSampleType);
@@ -172,6 +172,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             etNextHeather = (EditText)findViewById(R.id.etNextHeather);
             etNextDensity = (Spinner)findViewById(R.id.etNextDensity);
             etNextComment = (EditText)findViewById(R.id.etNextComment);
+            etNextWeight = (EditText)findViewById(R.id.etNextFreshWeight);
 
             ArrayList<String> sampleTypes = new ArrayList<String>();
             File file = new File (cfgDir, "sample-types.txt");
@@ -295,7 +296,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             Criteria criteria = new Criteria();
             locProvider = locManager.getBestProvider(criteria, false);
             if(locProvider == null) {
-                Toast.makeText(this, "No location provider available", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Ingen 'location provider' tilgjengelig", Toast.LENGTH_SHORT).show();
                 exitApp();
                 return;
             }
@@ -376,7 +377,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String sampleType = etNextSampleType.getText().toString().trim();
                 if(sampleType.length() < 1)
                 {
-                    Toast.makeText(SampleRegistrationActivity.this, ErrorString("Field 'Sample type' is required"), Toast.LENGTH_LONG).show();
+                    Toast.makeText(SampleRegistrationActivity.this, ErrorString("Feltet for prøvetype er påkrevet"), Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -389,25 +390,50 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String projName = tvProjName.getText().toString();
                 String currLat = tvCurrLat.getText().toString().trim();
                 String currLon = tvCurrLon.getText().toString().trim();
+                String aboveSea = tvCurrentAboveSeaLevel.getText().toString().trim();
                 String dataID = tvDataID.getText().toString().trim();
                 String nextID = tvNextID.getText().toString().trim();
                 String location = etNextLocation.getText().toString().trim();
                 String locationType = etNextLocationType.getSelectedItem().toString().trim();
                 String adjacentHardwoods = "";
                 List<String> items = etNextAdjacentHardwoods.getItems();
-                for(int i=0; i<items.size(); i++) {
-                    adjacentHardwoods += items.get(i).trim() + ",";
-                }
+                boolean[] selected = etNextAdjacentHardwoods.getSelected();
+                for(int i=0; i<items.size(); i++)
+                    if(selected[i])
+                        adjacentHardwoods += items.get(i).trim() + ",";
+                if(adjacentHardwoods.length() > 0 && adjacentHardwoods.endsWith(","))
+                    adjacentHardwoods = adjacentHardwoods.substring(0, adjacentHardwoods.length() - 1);
+
                 String grass = etNextGrass.getText().toString().trim();
                 String herbs = etNextHerbs.getText().toString().trim();
                 String heather = etNextHeather.getText().toString().trim();
+                String density = etNextDensity.getSelectedItem().toString().trim();
+                String weight = etNextWeight.getText().toString().trim();
                 String sampleComment = etNextComment.getText().toString().trim();
                 String nSats = String.valueOf(nSatellites);
                 String nAcc = String.valueOf(accuracy);
 
+                if(location.length() < 1)
+                {
+                    Toast.makeText(SampleRegistrationActivity.this, ErrorString("Feltet for stedsnavn er påkrevet"), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(locationType.length() < 1)
+                {
+                    Toast.makeText(SampleRegistrationActivity.this, ErrorString("Feltet for områdebeskrivelse er påkrevet"), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(density.length() < 1)
+                {
+                    Toast.makeText(SampleRegistrationActivity.this, ErrorString("Feltet for forekomst er påkrevet"), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 String line = dataID + "|" + nextID + "|" + collector + "|" + collectorAddress + "|" + projName + "|"
-                        + strDateISO + "|" + currLat + "|" + currLon + "|" + sampleType + "|" + location + "|"
-                        + locationType + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|"
+                        + strDateISO + "|" + currLat + "|" + currLon + "|"  + aboveSea + "|" + sampleType + "|" + location + "|"
+                        + locationType + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|" + density + "|" + weight + "|"
                         + nSats + "|" + nAcc + "|" + sampleComment + "\n";
 
                 File file = new File (projDir, tvProjName.getText().toString() + ".txt");
@@ -416,10 +442,12 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 out.flush();
                 out.close();
 
-                Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + nextID + " stored as " + sampleType, Toast.LENGTH_LONG).show();
+                Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + nextID + " lagret som " + sampleType, Toast.LENGTH_LONG).show();
 
                 nextId++;
                 tvNextID.setText(String.valueOf(nextId));
+
+                etNextSampleType.setText("");
 
             } catch (Exception e) {
                 Toast.makeText(SampleRegistrationActivity.this, ErrorString(e.getMessage()), Toast.LENGTH_LONG).show();
@@ -434,19 +462,19 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
             if(dataId.trim().length() < 1)
             {
-                Toast.makeText(SampleRegistrationActivity.this, ErrorString("You must add a Phone ID under settings"), Toast.LENGTH_LONG).show();
+                Toast.makeText(SampleRegistrationActivity.this, ErrorString("Du må legge inn en 'Phone ID' under innstillinger"), Toast.LENGTH_LONG).show();
                 return;
             }
 
             if(collector.trim().length() < 1)
             {
-                Toast.makeText(SampleRegistrationActivity.this, ErrorString("You must add a collector name under settings"), Toast.LENGTH_LONG).show();
+                Toast.makeText(SampleRegistrationActivity.this, ErrorString("Du må legge inn en 'collector' under innstillinger"), Toast.LENGTH_LONG).show();
                 return;
             }
 
             if(collectorAddress.trim().length() < 1)
             {
-                Toast.makeText(SampleRegistrationActivity.this, ErrorString("You must add a collector address under settings"), Toast.LENGTH_LONG).show();
+                Toast.makeText(SampleRegistrationActivity.this, ErrorString("Du må legge inn en 'collector address' under innstillinger"), Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -473,14 +501,14 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String strNewProj = et.getText().toString().trim();
                 if(strNewProj.length() < 1)
                 {
-                    Toast.makeText(SampleRegistrationActivity.this, ErrorString("Field 'Project name' is required"), Toast.LENGTH_LONG).show();
+                    Toast.makeText(SampleRegistrationActivity.this, ErrorString("Feltet for 'prosjektnavn' er påkrevet"), Toast.LENGTH_LONG).show();
                     return true;
                 }
 
                 for(int i=0; i<adapter.getCount(); i++) {
                     String s = (String)adapter.getItem(i);
                     if(s.equalsIgnoreCase(strNewProj)) {
-                        Toast.makeText(SampleRegistrationActivity.this, ErrorString("Project already exists"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(SampleRegistrationActivity.this, ErrorString("Prosjektet finnes allerede"), Toast.LENGTH_LONG).show();
                         return true;
                     }
                 }
@@ -526,7 +554,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     protected void onResume() {
         super.onResume();
         if(!providerEnabled) {
-            Toast.makeText(SampleRegistrationActivity.this, ErrorString("No provider enabled"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(SampleRegistrationActivity.this, ErrorString("Ingen 'provider' aktiv"), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -556,18 +584,23 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     @Override
     public void onLocationChanged(Location location) {
 
-        if(location.getAccuracy() > 150f)
-            return;
+        if(location.hasAltitude()) {
+            double alt = location.getAltitude();
+            tvCurrentAboveSeaLevel.setText(String.valueOf(alt));
+        }
 
-        accuracy = location.getAccuracy();
-        tvCurrAcc.setText("Acc: " + String.valueOf(accuracy) + "m");
+        if(location.hasAccuracy()) {
+            accuracy = location.getAccuracy();
+            tvCurrAcc.setText("Acc: " + String.valueOf(accuracy) + "m");
+        }
 
         Date now = new Date();
-        double lat = (double) (location.getLatitude());
-        double lng = (double) (location.getLongitude());
-
         tvCurrGPSDate.setText(DateFormat.getDateTimeInstance().format(now));
+
+        double lat = (double) (location.getLatitude());
         tvCurrLat.setText(String.valueOf(lat));
+
+        double lng = (double) (location.getLongitude());
         tvCurrLon.setText(String.valueOf(lng));
     }
 
@@ -616,7 +649,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 items.add(baseName);
             }
         }
-        lstProj.setAdapter(adapter); // FIXME: probably overkill
+        lstProj.setAdapter(adapter);
     }
 
     public void exitApp() {
@@ -625,12 +658,4 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-
-    /*@Override
-    public void onItemsSelected(boolean[] selected) {
-        for(int i=0; i<selected.length; i++) {
-            if(selected[i])
-                Log.d("", etNextAdjacentHardwoods.getItems().get(i));
-        }
-    }*/
 }

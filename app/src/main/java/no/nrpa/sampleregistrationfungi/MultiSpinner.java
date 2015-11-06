@@ -107,6 +107,10 @@ public class MultiSpinner extends Spinner implements
         return items;
     }
 
+    public boolean[] getSelected() {
+        return selected;
+    }
+
     public interface MultiSpinnerListener {
         public void onItemsSelected(boolean[] selected);
     }

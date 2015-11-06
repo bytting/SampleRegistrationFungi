@@ -9,6 +9,7 @@
     <string name="latitude">Breddegrad</string>
     <string name="last_gps_latitude_not_available">NA</string>
     <string name="longitude">Lengdegrad</string>
+    <string name="above_sea_level">Meter over havet</string>
     <string name="last_gps_longitude_not_available">NA</string>
     <string name="next_sample_information">Neste prøveinformasjon</string>
     <string name="id">ID</string>
