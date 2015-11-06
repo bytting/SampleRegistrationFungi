@@ -172,19 +172,19 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#0054BB" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/id_info" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:editable="false"
-                        android:text="@string/id"
-                        android:textColor="#073642" />
 
                     <TextView
                         android:id="@+id/tvDataId"
@@ -202,41 +202,62 @@
                         android:textColor="#073642" />
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/sample_type_info" />
+
                 <AutoCompleteTextView
                     android:id="@+id/etNextSampleType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:hint="@string/sample_type"
                     android:imeOptions="actionNext"
                     android:maxLength="64"
                     android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
+                    android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/location_info" />
 
                 <AutoCompleteTextView
                     android:id="@+id/etNextLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:hint="@string/location"
                     android:imeOptions="actionNext"
                     android:maxLength="64"
                     android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
+                    android:textColor="#073642" />
 
-                <AutoCompleteTextView
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/location_type_info" />
+
+                <Spinner
                     android:id="@+id/etNextLocationType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:hint="@string/location_type"
                     android:imeOptions="actionNext"
-                    android:maxLength="64"
-                    android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
+                    android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/adjacent_hardwoods_info" />
 
                 <no.nrpa.sampleregistrationfungi.MultiSpinner
                     android:id="@+id/etNextAdjacentHardwoods"
@@ -245,112 +266,130 @@
                     android:imeOptions="actionNext"
                     android:textColor="#073642" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/grass_info" />
+
+                <EditText
+                    android:id="@+id/etNextGrass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="3"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/herbs_info" />
+
+                <EditText
+                    android:id="@+id/etNextHerbs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="3"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/heather_info" />
+
+                <EditText
+                    android:id="@+id/etNextHeather"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="3"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/density_info" />
+
+                <Spinner
+                    android:id="@+id/etNextDensity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/fresh_weight_info" />
+
+                <EditText
+                    android:id="@+id/etNextFreshWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="8"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
+                    android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/comment_info" />
+
                 <EditText
                     android:id="@+id/etNextComment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/comment"
                     android:maxLength="128"
                     android:minWidth="100dp"
                     android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
+                    android:textColor="#073642" />
 
-                <EditText
-                    android:id="@+id/etNextComment1"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/comment"
-                    android:maxLength="128"
-                    android:minWidth="100dp"
-                    android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
+                    android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/etNextComment2"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/comment"
-                    android:maxLength="128"
-                    android:minWidth="100dp"
-                    android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
+                    android:layout_gravity="left"
+                    android:text="@string/back" />
 
-                <EditText
-                    android:id="@+id/etNextComment3"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btnNextId"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/comment"
-                    android:maxLength="128"
-                    android:minWidth="100dp"
-                    android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
+                    android:layout_gravity="right"
+                    android:text="@string/store_next_sample" />
 
-                <EditText
-                    android:id="@+id/etNextComment4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/comment"
-                    android:maxLength="128"
-                    android:minWidth="100dp"
-                    android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
-
-                <EditText
-                    android:id="@+id/etNextComment5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/comment"
-                    android:maxLength="128"
-                    android:minWidth="100dp"
-                    android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
-
-                <EditText
-                    android:id="@+id/etNextComment6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/comment"
-                    android:maxLength="128"
-                    android:minWidth="100dp"
-                    android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
-
-                <EditText
-                    android:id="@+id/etNextComment7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/comment"
-                    android:maxLength="128"
-                    android:minWidth="100dp"
-                    android:singleLine="true"
-                    android:textColor="#073642"
-                    android:textColorHint="#93a1a1" />
-
+                </LinearLayout>
 
             </LinearLayout>
 
         </ScrollView>
-
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|left"
-                android:text="@string/back" />
-
-            <Button
-                android:id="@+id/btnNextId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:text="@string/store_next_sample" />
 
         </FrameLayout>
     </ViewSwitcher>

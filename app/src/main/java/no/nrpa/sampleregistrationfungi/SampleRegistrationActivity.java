@@ -49,6 +49,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -73,6 +74,7 @@ import no.nrpa.sampleregistrationfungi.R;
 public class SampleRegistrationActivity extends AppCompatActivity implements LocationListener {
 
     private ViewSwitcher switcher;
+    private Button btnBack, btnNextId;
     private ListView lstProj;
     private ArrayList<String> items;
     private ListAdapter adapter;
@@ -80,8 +82,9 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     private String locProvider;
     private boolean providerEnabled;
     private TextView tvProjName, tvCurrProvider, tvCurrFix, tvCurrAcc, tvCurrGPSDate, tvCurrLat, tvCurrLon, tvDataID, tvNextID;
-    private EditText etNextComment;
-    private AutoCompleteTextView etNextSampleType, etNextLocation, etNextLocationType;
+    private EditText etNextGrass, etNextHerbs, etNextHeather, etNextComment;
+    private AutoCompleteTextView etNextSampleType, etNextLocation;
+    private Spinner etNextLocationType, etNextDensity;
     private MultiSpinner etNextAdjacentHardwoods;
     private File projDir, cfgDir;
     private int nextId;
@@ -107,6 +110,12 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             int winWidth = displaymetrics.widthPixels;
             int winHeight = displaymetrics.heightPixels;
+
+            int cliWidth = winWidth - 32;
+            btnBack = (Button)findViewById(R.id.btnBack);
+            btnBack.setWidth(cliWidth / 3);
+            btnNextId = (Button)findViewById(R.id.btnNextId);
+            btnNextId.setWidth(cliWidth / 3 * 2);
 
             ActionBar actionBar = getSupportActionBar();
             if(actionBar != null) {
@@ -156,8 +165,12 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             tvNextID = (TextView)findViewById(R.id.tvNextId);
             etNextSampleType = (AutoCompleteTextView)findViewById(R.id.etNextSampleType);
             etNextLocation = (AutoCompleteTextView)findViewById(R.id.etNextLocation);
-            etNextLocationType = (AutoCompleteTextView)findViewById(R.id.etNextLocationType);
+            etNextLocationType = (Spinner)findViewById(R.id.etNextLocationType);
             etNextAdjacentHardwoods = (MultiSpinner)findViewById(R.id.etNextAdjacentHardwoods);
+            etNextGrass = (EditText)findViewById(R.id.etNextGrass);
+            etNextHerbs = (EditText)findViewById(R.id.etNextHerbs);
+            etNextHeather = (EditText)findViewById(R.id.etNextHeather);
+            etNextDensity = (Spinner)findViewById(R.id.etNextDensity);
             etNextComment = (EditText)findViewById(R.id.etNextComment);
 
             ArrayList<String> sampleTypes = new ArrayList<String>();
@@ -198,6 +211,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             if(!file.exists()) {
                 file.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                writer.write("\n");
+                writer.write("Skogsbeite\n");
                 writer.write("Fjellbeite\n");
                 writer.write("Kysthei\n");
                 writer.write("Myr\n");
@@ -215,7 +230,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             }
             buf.close();
 
-            ArrayAdapter<String> adapterLocationTypes = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, locationTypes);
+            ArrayAdapter<String> adapterLocationTypes = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationTypes);
+            adapterLocationTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             etNextLocationType.setAdapter(adapterLocationTypes);
 
             ArrayList<String> adjacentHardwoods = new ArrayList<String>();
@@ -242,6 +258,15 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 @Override
                 public void onItemsSelected(boolean[] selected) {}
             });
+
+            ArrayList<String> densityList = new ArrayList<String>();
+            densityList.add("");
+            densityList.add("Lite");
+            densityList.add("Middels");
+            densityList.add("Mye");
+            ArrayAdapter<String> adapterDensity = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, densityList);
+            adapterDensity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            etNextDensity.setAdapter(adapterDensity);
 
             // Load preferences
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -367,12 +392,23 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String dataID = tvDataID.getText().toString().trim();
                 String nextID = tvNextID.getText().toString().trim();
                 String location = etNextLocation.getText().toString().trim();
-                String locationType = etNextLocationType.getText().toString().trim();
+                String locationType = etNextLocationType.getSelectedItem().toString().trim();
+                String adjacentHardwoods = "";
+                List<String> items = etNextAdjacentHardwoods.getItems();
+                for(int i=0; i<items.size(); i++) {
+                    adjacentHardwoods += items.get(i).trim() + ",";
+                }
+                String grass = etNextGrass.getText().toString().trim();
+                String herbs = etNextHerbs.getText().toString().trim();
+                String heather = etNextHeather.getText().toString().trim();
                 String sampleComment = etNextComment.getText().toString().trim();
                 String nSats = String.valueOf(nSatellites);
                 String nAcc = String.valueOf(accuracy);
 
-                String line = dataID + "|" + collector + "|" + collectorAddress + "|" + projName + "|" + nextID + "|" + strDateISO + "|" + currLat + "|" + currLon + "|" + sampleType + "|" + location + "|" + locationType + "|" + nSats + "|" + nAcc + "|" + sampleComment + "\n";
+                String line = dataID + "|" + nextID + "|" + collector + "|" + collectorAddress + "|" + projName + "|"
+                        + strDateISO + "|" + currLat + "|" + currLon + "|" + sampleType + "|" + location + "|"
+                        + locationType + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|"
+                        + nSats + "|" + nAcc + "|" + sampleComment + "\n";
 
                 File file = new File (projDir, tvProjName.getText().toString() + ".txt");
                 FileOutputStream out = new FileOutputStream(file, true);

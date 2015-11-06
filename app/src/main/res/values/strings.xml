@@ -1,25 +1,29 @@
 <resources>
-    <string name="app_name">Sample Registration Fungi</string>
-    <string name="action_settings">Settings</string>
-    <string name="new_project">Create new project</string>
-    <string name="project_name">Project name</string>
-    <string name="last_gps_information_received">Last GPS information received</string>
+    <string name="app_name">Prøveregistrering - Sopp</string>
+    <string name="action_settings">Innstillinger</string>
+    <string name="new_project">Opprett nytt prosjekt</string>
+    <string name="project_name">Prosjektnavn</string>
+    <string name="last_gps_information_received">Siste GPS informasjon motatt</string>
     <string name="provider_not_available">NA</string>
     <string name="last_gps_date_not_available">NA</string>
-    <string name="latitude">Latitude</string>
+    <string name="latitude">Breddegrad</string>
     <string name="last_gps_latitude_not_available">NA</string>
-    <string name="longitude">Longitude</string>
+    <string name="longitude">Lengdegrad</string>
     <string name="last_gps_longitude_not_available">NA</string>
-    <string name="next_sample_information">Next sample information</string>
+    <string name="next_sample_information">Neste prøveinformasjon</string>
     <string name="id">ID</string>
-    <string name="sample_type">Sample type</string>
-    <string name="location">Location</string>
-    <string name="location_type">Location Type</string>
-    <string name="adjacent_hardwoods">Treslag i umiddelbar nærhet</string>
+    <string name="id_info">ID til neste prøve som blir lagret:</string>
+    <string name="sample_type_info">Velg prøvetype:</string>
+    <string name="location_info">Stedsnavn der prøven er tilegnet:</string>
+    <string name="location_type_info">Områdebeskrivelse:</string>
+    <string name="adjacent_hardwoods_info">Treslag i umiddelbar nærhet:</string>
+    <string name="grass_info" formatted="false">Plantesammensetning - Gress (%):</string>
+    <string name="herbs_info" formatted="false">Plantesammensetning - Urter (%):</string>
+    <string name="heather_info" formatted="false">Plantesammensetning - Lyng (%):</string>
+    <string name="density_info">Tetthet av soppforekomstene:</string>
+    <string name="fresh_weight_info">Ferskvekt av prøven (g):</string>
+    <string name="comment_info">Kommentar for prøven:</string>
     <string name="value">Value</string>
-    <string name="unit">Unit</string>
-    <string name="station">Station</string>
-    <string name="comment">Comment</string>
     <string name="back">Back</string>
     <string name="store_next_sample">Store next sample</string>
 </resources>
