@@ -81,8 +81,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     private String locProvider;
     private boolean providerEnabled;
     private TextView tvProjName, tvCurrProvider, tvCurrFix, tvCurrAcc, tvCurrGPSDate, tvCurrLat, tvCurrLon, tvCurrentAboveSeaLevel, tvDataID, tvNextID;
-    private EditText etNextGrass, etNextHerbs, etNextHeather, etNextComment, etNextWeight;
-    private AutoCompleteTextView etNextSampleType, etNextLocation;
+    private EditText etNextGrass, etNextHerbs, etNextHeather, etNextComment, etNextLocation;
+    private AutoCompleteTextView etNextSampleType;
     private Spinner etNextLocationType, etNextDensity;
     private MultiSpinner etNextAdjacentHardwoods;
     private File projDir, cfgDir;
@@ -164,7 +164,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             tvDataID = (TextView)findViewById(R.id.tvDataId);
             tvNextID = (TextView)findViewById(R.id.tvNextId);
             etNextSampleType = (AutoCompleteTextView)findViewById(R.id.etNextSampleType);
-            etNextLocation = (AutoCompleteTextView)findViewById(R.id.etNextLocation);
+            etNextLocation = (EditText)findViewById(R.id.etNextLocation);
             etNextLocationType = (Spinner)findViewById(R.id.etNextLocationType);
             etNextAdjacentHardwoods = (MultiSpinner)findViewById(R.id.etNextAdjacentHardwoods);
             etNextGrass = (EditText)findViewById(R.id.etNextGrass);
@@ -172,40 +172,32 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             etNextHeather = (EditText)findViewById(R.id.etNextHeather);
             etNextDensity = (Spinner)findViewById(R.id.etNextDensity);
             etNextComment = (EditText)findViewById(R.id.etNextComment);
-            etNextWeight = (EditText)findViewById(R.id.etNextFreshWeight);
 
             ArrayList<String> sampleTypes = new ArrayList<String>();
-            File file = new File (cfgDir, "sample-types.txt");
-            if(file.exists()) {
-                String line;
-                BufferedReader buf = new BufferedReader(new FileReader(file));
-                while ((line = buf.readLine()) != null) {
-                    sampleTypes.add(line);
-                }
-                buf.close();
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, sampleTypes);
-                etNextSampleType.setAdapter(adapter);
-            }
-
-            ArrayList<String> locations = new ArrayList<String>();
-            file = new File (cfgDir, "locations.txt");
+            File file = new File (cfgDir, "sample_types.txt");
             if(!file.exists()) {
                 file.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                writer.write("Skrøylå/Fossmark\n");
-                writer.write("Ukjent\n");
+                writer.write("Steinsopp\n");
+                writer.write("Fluesopp\n");
+                writer.write("Kantarell\n");
+                writer.write("Blåbær\n");
+                writer.write("Jordbær\n");
+                writer.write("Bringebær\n");
+                writer.write("Tyttebær\n");
+                writer.write("Annet\n");
                 writer.close();
             }
 
             String line;
             BufferedReader buf = new BufferedReader(new FileReader(file));
             while ((line = buf.readLine()) != null) {
-                locations.add(line);
+                sampleTypes.add(line);
             }
             buf.close();
-            ArrayAdapter<String> adapterLocations = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, locations);
-            etNextLocation.setAdapter(adapterLocations);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, sampleTypes);
+            etNextSampleType.setAdapter(adapter);
 
             ArrayList<String> locationTypes = new ArrayList<String>();
             file = new File (cfgDir, "location_types.txt");
@@ -221,7 +213,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 writer.write("Løvskog\n");
                 writer.write("Fjellskog\n");
                 writer.write("Snaufjellet\n");
-                writer.write("Ukjent\n");
+                writer.write("Annet\n");
                 writer.close();
             }
 
@@ -243,8 +235,12 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 writer.write("Gran\n");
                 writer.write("Furu\n");
                 writer.write("Bjørk\n");
+                writer.write("Selje\n");
                 writer.write("Osp\n");
                 writer.write("Rogn\n");
+                writer.write("Or\n");
+                writer.write("Vier\n");
+                writer.write("Einer\n");
                 writer.write("Annet\n");
                 writer.close();
             }
@@ -408,7 +404,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String herbs = etNextHerbs.getText().toString().trim();
                 String heather = etNextHeather.getText().toString().trim();
                 String density = etNextDensity.getSelectedItem().toString().trim();
-                String weight = etNextWeight.getText().toString().trim();
                 String sampleComment = etNextComment.getText().toString().trim();
                 String nSats = String.valueOf(nSatellites);
                 String nAcc = String.valueOf(accuracy);
@@ -433,7 +428,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
                 String line = dataID + "|" + nextID + "|" + collector + "|" + collectorAddress + "|" + projName + "|"
                         + strDateISO + "|" + currLat + "|" + currLon + "|"  + aboveSea + "|" + sampleType + "|" + location + "|"
-                        + locationType + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|" + density + "|" + weight + "|"
+                        + locationType + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|" + density + "|"
                         + nSats + "|" + nAcc + "|" + sampleComment + "\n";
 
                 File file = new File (projDir, tvProjName.getText().toString() + ".txt");

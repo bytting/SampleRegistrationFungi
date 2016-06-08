@@ -1,30 +1,33 @@
 <resources>
-    <string name="app_name">Prøveregistrering - Sopp</string>
+    <string name="app_name">Prøvetaking Sopp og Bær</string>
     <string name="action_settings">Innstillinger</string>
-    <string name="new_project">Opprett nytt prosjekt</string>
-    <string name="project_name">Prosjektnavn</string>
+    <string name="new_project">Opprett ny logg fil</string>
+    <string name="existing_projects">Eksisterende logg filer</string>
+    <string name="project_name">Filnavn</string>
     <string name="last_gps_information_received">Siste GPS informasjon motatt</string>
     <string name="provider_not_available">NA</string>
     <string name="last_gps_date_not_available">NA</string>
     <string name="latitude">Breddegrad</string>
     <string name="last_gps_latitude_not_available">NA</string>
     <string name="longitude">Lengdegrad</string>
-    <string name="above_sea_level">MOH (WGS84)</string>
+    <string name="above_sea_level">moh (WGS84)</string>
     <string name="last_gps_longitude_not_available">NA</string>
     <string name="next_sample_information">Neste prøveinformasjon</string>
     <string name="id">ID</string>
-    <string name="id_info">ID til neste prøve som blir lagret:</string>
-    <string name="sample_type_info">Velg prøvetype:</string>
-    <string name="location_info">Stedsnavn der prøven er tilegnet:</string>
+    <string name="id_info">Prøve ID:</string>
+    <string name="sample_type_info">Art:</string>
+    <string name="location_info">Område:</string>
     <string name="location_type_info">Områdebeskrivelse:</string>
-    <string name="adjacent_hardwoods_info">Treslag i umiddelbar nærhet:</string>
-    <string name="grass_info" formatted="false">Plantesammensetning - Gress (%):</string>
-    <string name="herbs_info" formatted="false">Plantesammensetning - Urter (%):</string>
-    <string name="heather_info" formatted="false">Plantesammensetning - Lyng (%):</string>
-    <string name="density_info">Tetthet av soppforekomstene:</string>
-    <string name="fresh_weight_info">Ferskvekt av prøven (g):</string>
-    <string name="comment_info">Kommentar for prøven:</string>
-    <string name="value">Value</string>
-    <string name="back">Back</string>
-    <string name="store_next_sample">Store next sample</string>
+    <string name="county">Fylke:</string>
+    <string name="community">Kommune:</string>
+    <string name="adjacent_hardwoods_info">Treslag i umiddelbar nærhet (10x10m):</string>
+    <string name="herbs_info_header">Plantesammensetning</string>
+    <string name="grass_info" formatted="false">Gress (%):</string>
+    <string name="herbs_info" formatted="false">Urter (%):</string>
+    <string name="heather_info" formatted="false">Lyng (%):</string>
+    <string name="density_info">Mengde sopp/bær:</string>
+    <string name="comment_info">Merknader:</string>
+    <string name="value">Verdi</string>
+    <string name="back">Tilbake</string>
+    <string name="store_next_sample">Lagre prøve</string>
 </resources>

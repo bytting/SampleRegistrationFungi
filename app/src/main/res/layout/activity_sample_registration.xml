@@ -36,6 +36,14 @@
                 android:textColor="#073642"
                 android:textColorHint="#93a1a1" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#0054BB"
+                android:text="@string/existing_projects" />
+
             <ListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
@@ -249,7 +257,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/location_info" />
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/etNextLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -279,6 +287,36 @@
                     android:layout_marginTop="24dp"
                     android:editable="false"
                     android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/county" />
+
+                <Spinner
+                    android:id="@+id/etNextCounty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/community" />
+
+                <Spinner
+                    android:id="@+id/etNextCommunity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/adjacent_hardwoods_info" />
 
                 <no.nrpa.sampleregistrationfungi.MultiSpinner
@@ -287,6 +325,15 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold"
+                    android:text="@string/herbs_info_header" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -352,23 +399,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:textColor="#073642" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:editable="false"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/fresh_weight_info" />
-
-                <EditText
-                    android:id="@+id/etNextFreshWeight"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="8"
-                    android:minWidth="100dp"
-                    android:singleLine="true"
                     android:textColor="#073642" />
 
                 <TextView
