@@ -433,6 +433,13 @@
                     android:text="@string/back" />
 
                 <Button
+                    android:id="@+id/btnEditSample"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="@string/edit_sample" />
+
+                <Button
                     android:id="@+id/btnNextId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

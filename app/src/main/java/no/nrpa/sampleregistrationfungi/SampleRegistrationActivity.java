@@ -16,6 +16,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package no.nrpa.sampleregistrationfungi;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.GpsSatellite;
@@ -56,9 +58,11 @@ import android.widget.ViewSwitcher;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.LineNumberReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -73,7 +77,7 @@ import no.nrpa.sampleregistrationfungi.R;
 public class SampleRegistrationActivity extends AppCompatActivity implements LocationListener {
 
     private ViewSwitcher switcher;
-    private Button btnBack, btnNextId;
+    private Button btnBack, btnNextId, btnEditSample;
     private ListView lstProj;
     private ArrayList<String> items;
     private ListAdapter adapter;
@@ -92,6 +96,12 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     private float syncDistance;
     private int nSatellites;
     private float accuracy;
+
+    private int editIndex = -1;
+    private List<String> editSampleArray = new ArrayList<String>();
+    ArrayList<String> locationTypes = new ArrayList<String>();
+    ArrayList<String> adjacentHardwoods = new ArrayList<String>();
+    ArrayList<String> densityList = new ArrayList<String>();
 
     private Spanned ErrorString(String s) {
         return Html.fromHtml("<font color='#ff8888' ><b>" + s + "</b></font>");
@@ -113,8 +123,15 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             int cliWidth = winWidth - 32;
             btnBack = (Button)findViewById(R.id.btnBack);
             btnBack.setWidth(cliWidth / 3);
+            btnBack.setOnClickListener(btnBack_onClick);
+
+            btnEditSample = (Button)findViewById(R.id.btnEditSample);
+            btnEditSample.setWidth(cliWidth / 3);
+            btnEditSample.setOnClickListener(btnEditSample_onClick);
+
             btnNextId = (Button)findViewById(R.id.btnNextId);
-            btnNextId.setWidth(cliWidth / 3 * 2);
+            btnNextId.setWidth(cliWidth / 3);
+            btnNextId.setOnClickListener(btnNextID_onClick);
 
             ActionBar actionBar = getSupportActionBar();
             if(actionBar != null) {
@@ -146,12 +163,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             lstProj.setOnItemClickListener(lstProj_onItemClick);
 
             populateProjects();
-
-            Button btnBack = (Button) findViewById(R.id.btnBack);
-            btnBack.setOnClickListener(btnBack_onClick);
-
-            Button btnNextID = (Button) findViewById(R.id.btnNextId);
-            btnNextID.setOnClickListener(btnNextID_onClick);
 
             tvProjName = (TextView) findViewById(R.id.tvProjName);
             tvCurrProvider = (TextView) findViewById(R.id.tvCurrentProvider);
@@ -201,7 +212,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             ArrayAdapter<String> adapterSampleTypes = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, sampleTypes);
             etNextSampleType.setAdapter(adapterSampleTypes);
 
-            ArrayList<String> locationTypes = new ArrayList<String>();
             file = new File (cfgDir, "location_types.txt");
             if(!file.exists()) {
                 file.createNewFile();
@@ -229,7 +239,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             adapterLocationTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             etNextLocationType.setAdapter(adapterLocationTypes);
 
-            ArrayList<String> adjacentHardwoods = new ArrayList<String>();
             file = new File (cfgDir, "adjacent_hardwoods.txt");
             if(!file.exists()) {
                 file.createNewFile();
@@ -259,7 +268,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 }
             });
 
-            ArrayList<String> densityList = new ArrayList<String>();
             densityList.add("");
             densityList.add("Lite");
             densityList.add("Middels");
@@ -379,7 +387,82 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     private View.OnClickListener btnBack_onClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            editIndex = -1;
             switcher.showPrevious();
+        }
+    };
+
+    private View.OnClickListener btnEditSample_onClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            editIndex = -1;
+
+            // TODO
+            File file = new File (projDir, tvProjName.getText().toString() + ".txt");
+            if(!file.exists())
+                return;
+
+            String line;
+            BufferedReader buf = null;
+            editSampleArray.clear();
+
+            try {
+                buf = new BufferedReader(new FileReader(file));
+
+                buf.readLine();
+                while ((line = buf.readLine()) != null) {
+                    editSampleArray.add(line);
+                    //String[] parts = line.split("\\|");
+                    //editSampleArray.add(parts[1] + " " + parts[9]);
+                }
+
+                buf.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+
+            String[] samples = new String[editSampleArray.size()];
+            for(int i=0; i<editSampleArray.size(); i++)
+            {
+                String[] parts = editSampleArray.get(i).split("\\|");
+                samples[i] = parts[1] + " - " + parts[9];
+            }
+            //samples = editSampleArray.toArray(samples);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(SampleRegistrationActivity.this);
+            builder.setTitle(R.string.select_sample).setItems(samples, selectSampleListener);
+            builder.show();
+        }
+    };
+
+    DialogInterface.OnClickListener selectSampleListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+            editIndex = which + 1;
+            String[] parts = editSampleArray.get(which).split("\\|");
+
+            tvDataID.setText(parts[0]);
+            tvNextID.setText(parts[1]);
+            etNextSampleType.setText(parts[9]);
+            etNextLocation.setText(parts[10]);
+            etNextLocationType.setSelection(locationTypes.indexOf(parts[11]));
+            etNextCommunity.setText(parts[12]);
+            etNextAdjacentHardwoods.setItems(adjacentHardwoods, parts[13], new MultiSpinner.MultiSpinnerListener() {
+                @Override
+                public void onItemsSelected(boolean[] selected) {
+                }
+            });
+            etNextGrass.setText(parts[14]);
+            etNextHerbs.setText(parts[15]);
+            etNextHeather.setText(parts[16]);
+            etNextDensity.setSelection(densityList.indexOf(parts[17]));
+            etNextReceiver.setText(parts[20]);
+            etNextComment.setText(parts[20]);
+
+            Toast.makeText(SampleRegistrationActivity.this, "Prøve valgt: " + editIndex + ": " + parts[1] + " - " + parts[9], Toast.LENGTH_LONG).show();
         }
     };
 
@@ -451,14 +534,25 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                         + locationType + "|" + community + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|" + density + "|"
                         + nSats + "|" + nAcc + "|" + receiver + "|" + sampleComment + "\n";
 
-                File file = new File (projDir, tvProjName.getText().toString() + ".txt");
-                FileOutputStream out = new FileOutputStream(file, true);
-                out.write(line.getBytes());
-                out.flush();
-                out.close();
+                if(editIndex == -1) {
+                    File file = new File(projDir, tvProjName.getText().toString() + ".txt");
+                    FileOutputStream out = new FileOutputStream(file, true);
+                    out.write(line.getBytes());
+                    out.flush();
+                    out.close();
+
+                    Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + nextID + " lagret som " + sampleType, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    // TODO
+                    // Update line "editIndex"
+
+                    Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + nextID + " oppdatert", Toast.LENGTH_LONG).show();
+                }
 
                 Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + nextID + " lagret som " + sampleType, Toast.LENGTH_LONG).show();
 
+                editIndex = -1;
                 nextId++;
                 tvNextID.setText(String.valueOf(nextId));
 
