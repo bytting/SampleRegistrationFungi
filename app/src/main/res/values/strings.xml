@@ -26,6 +26,7 @@
     <string name="herbs_info" formatted="false">Urter (%):</string>
     <string name="heather_info" formatted="false">Lyng (%):</string>
     <string name="density_info">Mengde sopp/bær:</string>
+    <string name="receiver_info">Sendes til:</string>
     <string name="comment_info">Merknader:</string>
     <string name="value">Verdi</string>
     <string name="back">Tilbake</string>

@@ -81,8 +81,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     private String locProvider;
     private boolean providerEnabled;
     private TextView tvProjName, tvCurrProvider, tvCurrFix, tvCurrAcc, tvCurrGPSDate, tvCurrLat, tvCurrLon, tvCurrentAboveSeaLevel, tvDataID, tvNextID;
-    private EditText etNextGrass, etNextHerbs, etNextHeather, etNextComment, etNextLocation;
-    private AutoCompleteTextView etNextSampleType;
+    private EditText etNextGrass, etNextHerbs, etNextHeather, etNextReceiver, etNextComment, etNextLocation;
+    private AutoCompleteTextView etNextSampleType, etNextCommunity;
     private Spinner etNextLocationType, etNextDensity;
     private MultiSpinner etNextAdjacentHardwoods;
     private File projDir, cfgDir;
@@ -166,11 +166,13 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             etNextSampleType = (AutoCompleteTextView)findViewById(R.id.etNextSampleType);
             etNextLocation = (EditText)findViewById(R.id.etNextLocation);
             etNextLocationType = (Spinner)findViewById(R.id.etNextLocationType);
+            etNextCommunity = (AutoCompleteTextView)findViewById(R.id.etNextCommunity);
             etNextAdjacentHardwoods = (MultiSpinner)findViewById(R.id.etNextAdjacentHardwoods);
             etNextGrass = (EditText)findViewById(R.id.etNextGrass);
             etNextHerbs = (EditText)findViewById(R.id.etNextHerbs);
             etNextHeather = (EditText)findViewById(R.id.etNextHeather);
             etNextDensity = (Spinner)findViewById(R.id.etNextDensity);
+            etNextReceiver = (EditText)findViewById(R.id.etNextReceiver);
             etNextComment = (EditText)findViewById(R.id.etNextComment);
 
             ArrayList<String> sampleTypes = new ArrayList<String>();
@@ -196,8 +198,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             }
             buf.close();
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, sampleTypes);
-            etNextSampleType.setAdapter(adapter);
+            ArrayAdapter<String> adapterSampleTypes = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, sampleTypes);
+            etNextSampleType.setAdapter(adapterSampleTypes);
 
             ArrayList<String> locationTypes = new ArrayList<String>();
             file = new File (cfgDir, "location_types.txt");
@@ -253,7 +255,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
             etNextAdjacentHardwoods.setItems(adjacentHardwoods, "", new MultiSpinner.MultiSpinnerListener() {
                 @Override
-                public void onItemsSelected(boolean[] selected) {}
+                public void onItemsSelected(boolean[] selected) {
+                }
             });
 
             ArrayList<String> densityList = new ArrayList<String>();
@@ -261,9 +264,24 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             densityList.add("Lite");
             densityList.add("Middels");
             densityList.add("Mye");
+
             ArrayAdapter<String> adapterDensity = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, densityList);
             adapterDensity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             etNextDensity.setAdapter(adapterDensity);
+
+            ArrayList<String> communities = new ArrayList<String>();
+            file = new File (cfgDir, "communities.txt");
+            if(file.exists()) {
+                buf = new BufferedReader(new FileReader(file));
+                while ((line = buf.readLine()) != null) {
+                    communities.add(line);
+                }
+                buf.close();
+            }
+
+            ArrayAdapter<String> adapterCommunities = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, communities);
+            adapterCommunities.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            etNextCommunity.setAdapter(adapterCommunities);
 
             // Load preferences
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -391,6 +409,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String nextID = tvNextID.getText().toString().trim();
                 String location = etNextLocation.getText().toString().trim();
                 String locationType = etNextLocationType.getSelectedItem().toString().trim();
+                String community = etNextCommunity.getText().toString().trim();
                 String adjacentHardwoods = "";
                 List<String> items = etNextAdjacentHardwoods.getItems();
                 boolean[] selected = etNextAdjacentHardwoods.getSelected();
@@ -404,6 +423,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String herbs = etNextHerbs.getText().toString().trim();
                 String heather = etNextHeather.getText().toString().trim();
                 String density = etNextDensity.getSelectedItem().toString().trim();
+                String receiver = etNextReceiver.getText().toString().trim();
                 String sampleComment = etNextComment.getText().toString().trim();
                 String nSats = String.valueOf(nSatellites);
                 String nAcc = String.valueOf(accuracy);
@@ -428,8 +448,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
                 String line = dataID + "|" + nextID + "|" + collector + "|" + collectorAddress + "|" + projName + "|"
                         + strDateISO + "|" + currLat + "|" + currLon + "|"  + aboveSea + "|" + sampleType + "|" + location + "|"
-                        + locationType + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|" + density + "|"
-                        + nSats + "|" + nAcc + "|" + sampleComment + "\n";
+                        + locationType + "|" + community + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|" + density + "|"
+                        + nSats + "|" + nAcc + "|" + receiver + "|" + sampleComment + "\n";
 
                 File file = new File (projDir, tvProjName.getText().toString() + ".txt");
                 FileOutputStream out = new FileOutputStream(file, true);

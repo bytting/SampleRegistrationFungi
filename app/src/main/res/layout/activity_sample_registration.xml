@@ -287,24 +287,9 @@
                     android:layout_marginTop="24dp"
                     android:editable="false"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/county" />
-
-                <Spinner
-                    android:id="@+id/etNextCounty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:textColor="#073642" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:editable="false"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/community" />
 
-                <Spinner
+                <AutoCompleteTextView
                     android:id="@+id/etNextCommunity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -399,6 +384,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
+                    android:textColor="#073642" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:editable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/receiver_info" />
+
+                <EditText
+                    android:id="@+id/etNextReceiver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="128"
+                    android:minWidth="100dp"
+                    android:singleLine="true"
                     android:textColor="#073642" />
 
                 <TextView
