@@ -261,6 +261,7 @@
                     android:id="@+id/etNextLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nextFocusDown="@+id/etNextLocationType"
                     android:imeOptions="actionNext"
                     android:maxLength="64"
                     android:singleLine="true"
@@ -384,6 +385,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:nextFocusDown="@+id/etNextReceiver"
                     android:textColor="#073642" />
 
                 <TextView

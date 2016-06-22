@@ -35,11 +35,15 @@ All configuration files must have UTF-8 format.
 
 __Status:__
 
-Development
+	Development
 
+__Dependencies:__
+
+	Location, External storage
+	
 __License:__
 
-GPL3
+	GPL3
 
 __Screenshots:__
 
