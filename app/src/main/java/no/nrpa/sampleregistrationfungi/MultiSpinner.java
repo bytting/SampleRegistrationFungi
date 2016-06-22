@@ -110,6 +110,18 @@ public class MultiSpinner extends Spinner implements
         return items;
     }
 
+    public String getItemsText() {
+        String res = "";
+        List<String> items = this.getItems();
+        boolean[] selected = this.getSelected();
+        for(int i=0; i<items.size(); i++)
+            if(selected[i])
+                res += this.items.get(i).trim() + ",";
+        if(res.length() > 0 && res.endsWith(","))
+            res = res.substring(0, res.length() - 1);
+        return res;
+    }
+
     public boolean[] getSelected() {
         return selected;
     }

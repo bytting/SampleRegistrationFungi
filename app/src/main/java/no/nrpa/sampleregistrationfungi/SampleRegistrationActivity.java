@@ -419,13 +419,14 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             editSampleArray.clear();
 
             try {
-                buf = new BufferedReader(new FileReader(file));
 
+                buf = new BufferedReader(new FileReader(file));
                 buf.readLine();
                 while ((line = buf.readLine()) != null)
                     editSampleArray.add(line);
 
                 buf.close();
+
             } catch (Exception e) {
                 e.printStackTrace();
                 return;
@@ -441,9 +442,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             AlertDialog.Builder builder = new AlertDialog.Builder(SampleRegistrationActivity.this);
             builder.setTitle(R.string.select_sample).setItems(samples, selectSampleListener);
             builder.show();
-
-            btnBack.setText(R.string.cancel);
-            btnNextId.setText(R.string.update);
         }
     };
 
@@ -453,6 +451,12 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
             editIndex = which;
             String[] parts = editSampleArray.get(which).split("\\|", -1);
+
+            if(parts.length < 22)
+            {
+                Toast.makeText(SampleRegistrationActivity.this, ErrorString("Feil antall elementer i loggfil"), Toast.LENGTH_LONG).show();
+                return;
+            }
 
             tvDataID.setText(parts[0]);
             tvNextID.setText(parts[1]);
@@ -472,7 +476,10 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             etNextReceiver.setText(parts[20]);
             etNextComment.setText(parts[21]);
 
-            Toast.makeText(SampleRegistrationActivity.this, "Prøve valgt: " + editIndex + ": " + parts[1] + " - " + parts[9], Toast.LENGTH_LONG).show();
+            btnBack.setText(R.string.cancel);
+            btnNextId.setText(R.string.update);
+
+            Toast.makeText(SampleRegistrationActivity.this, "Prøve valgt: " + parts[1] + " - " + parts[9], Toast.LENGTH_LONG).show();
         }
     };
 
@@ -503,15 +510,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String location = etNextLocation.getText().toString().trim();
                 String locationType = etNextLocationType.getSelectedItem().toString().trim();
                 String community = etNextCommunity.getText().toString().trim();
-                String adjacentHardwoods = "";
-                List<String> items = etNextAdjacentHardwoods.getItems();
-                boolean[] selected = etNextAdjacentHardwoods.getSelected();
-                for(int i=0; i<items.size(); i++)
-                    if(selected[i])
-                        adjacentHardwoods += items.get(i).trim() + ",";
-                if(adjacentHardwoods.length() > 0 && adjacentHardwoods.endsWith(","))
-                    adjacentHardwoods = adjacentHardwoods.substring(0, adjacentHardwoods.length() - 1);
-
+                String adjacentHardwoods = etNextAdjacentHardwoods.getItemsText();
                 String grass = etNextGrass.getText().toString().trim();
                 String herbs = etNextHerbs.getText().toString().trim();
                 String heather = etNextHeather.getText().toString().trim();
