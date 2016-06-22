@@ -92,12 +92,15 @@ public class MultiSpinner extends Spinner implements
         this.defaultText = allText;
         this.listener = listener;
 
-        // all selected by default
         selected = new boolean[items.size()];
         for (int i = 0; i < selected.length; i++)
             selected[i] = false;
 
-        // all text on the spinner
+        String[] sel = this.defaultText.split(",", -1);
+        for(int i=0; i<sel.length; i++)
+            if(this.items.contains(sel[i]))
+                selected[this.items.indexOf(sel[i])] = true;
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item, new String[] { allText });
         setAdapter(adapter);

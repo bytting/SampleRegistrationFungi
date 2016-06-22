@@ -387,6 +387,18 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     private View.OnClickListener btnBack_onClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            btnBack.setText(R.string.back);
+            btnNextId.setText(R.string.store_next_sample);
+            etNextSampleType.setText("");
+
+            if(editIndex != -1) {
+                editIndex = -1;
+                tvNextID.setText(String.valueOf(nextId));
+                btnEditSample.setEnabled(true);
+                return;
+            }
+            
             editIndex = -1;
             switcher.showPrevious();
         }
@@ -398,7 +410,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
             editIndex = -1;
 
-            // TODO
             File file = new File (projDir, tvProjName.getText().toString() + ".txt");
             if(!file.exists())
                 return;
@@ -411,11 +422,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 buf = new BufferedReader(new FileReader(file));
 
                 buf.readLine();
-                while ((line = buf.readLine()) != null) {
+                while ((line = buf.readLine()) != null)
                     editSampleArray.add(line);
-                    //String[] parts = line.split("\\|");
-                    //editSampleArray.add(parts[1] + " " + parts[9]);
-                }
 
                 buf.close();
             } catch (Exception e) {
@@ -426,14 +434,17 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             String[] samples = new String[editSampleArray.size()];
             for(int i=0; i<editSampleArray.size(); i++)
             {
-                String[] parts = editSampleArray.get(i).split("\\|");
+                String[] parts = editSampleArray.get(i).split("\\|", -1);
                 samples[i] = parts[1] + " - " + parts[9];
             }
-            //samples = editSampleArray.toArray(samples);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(SampleRegistrationActivity.this);
             builder.setTitle(R.string.select_sample).setItems(samples, selectSampleListener);
             builder.show();
+
+            btnBack.setText(R.string.cancel);
+            btnNextId.setText(R.string.update);
+            btnEditSample.setEnabled(false);
         }
     };
 
@@ -441,8 +452,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
         @Override
         public void onClick(DialogInterface dialog, int which) {
 
-            editIndex = which + 1;
-            String[] parts = editSampleArray.get(which).split("\\|");
+            editIndex = which;
+            String[] parts = editSampleArray.get(which).split("\\|", -1);
 
             tvDataID.setText(parts[0]);
             tvNextID.setText(parts[1]);
@@ -460,7 +471,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             etNextHeather.setText(parts[16]);
             etNextDensity.setSelection(densityList.indexOf(parts[17]));
             etNextReceiver.setText(parts[20]);
-            etNextComment.setText(parts[20]);
+            etNextComment.setText(parts[21]);
 
             Toast.makeText(SampleRegistrationActivity.this, "Prøve valgt: " + editIndex + ": " + parts[1] + " - " + parts[9], Toast.LENGTH_LONG).show();
         }
@@ -540,20 +551,41 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                     out.write(line.getBytes());
                     out.flush();
                     out.close();
+                    nextId++;
 
                     Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + nextID + " lagret som " + sampleType, Toast.LENGTH_LONG).show();
                 }
                 else {
-                    // TODO
-                    // Update line "editIndex"
+                    String filename = tvProjName.getText().toString() + ".txt";
+                    String newFilename = tvProjName.getText().toString() + "_new.txt";
+
+                    File file = new File(projDir, filename);
+                    File newFile = new File(projDir, newFilename);
+
+                    int idx = 0;
+                    String l;
+                    BufferedReader rd = new BufferedReader(new FileReader(file));
+                    BufferedWriter wr = new BufferedWriter(new FileWriter(newFile));
+                    while ((l = rd.readLine()) != null) {
+                        if(idx == editIndex + 1)
+                            wr.write(line);
+                        else
+                            wr.write(l);
+                        idx++;
+                    }
+                    rd.close();
+                    wr.close();
+
+                    file.delete();
+                    newFile.renameTo(file);
 
                     Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + nextID + " oppdatert", Toast.LENGTH_LONG).show();
+                    editIndex = -1;
+                    btnNextId.setText(R.string.store_next_sample);
+                    btnEditSample.setEnabled(true);
+                    btnBack.setText(R.string.back);
                 }
 
-                Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + nextID + " lagret som " + sampleType, Toast.LENGTH_LONG).show();
-
-                editIndex = -1;
-                nextId++;
                 tvNextID.setText(String.valueOf(nextId));
 
                 etNextSampleType.setText("");

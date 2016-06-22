@@ -29,7 +29,9 @@
     <string name="receiver_info">Sendes til:</string>
     <string name="comment_info">Merknader:</string>
     <string name="value">Verdi</string>
+    <string name="update">Oppdater</string>
     <string name="back">Tilbake</string>
+    <string name="cancel">Avbryt</string>
     <string name="store_next_sample">Lagre prøve</string>
     <string name="edit_sample">Rediger prøve</string>
     <string name="select_sample">Velg prøve</string>
