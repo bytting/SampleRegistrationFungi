@@ -19,7 +19,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.preference.PreferenceManager;
@@ -58,11 +57,11 @@ import android.widget.ViewSwitcher;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -75,6 +74,8 @@ import java.util.UUID;
 import no.nrpa.sampleregistrationfungi.R;
 
 public class SampleRegistrationActivity extends AppCompatActivity implements LocationListener {
+
+    private String newLine = System.getProperty("line.separator");
 
     private ViewSwitcher switcher;
     private Button btnBack, btnNextId, btnEditSample;
@@ -191,14 +192,14 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             if(!file.exists()) {
                 file.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                writer.write("Steinsopp\n");
-                writer.write("Fluesopp\n");
-                writer.write("Kantarell\n");
-                writer.write("Blåbær\n");
-                writer.write("Jordbær\n");
-                writer.write("Bringebær\n");
-                writer.write("Tyttebær\n");
-                writer.write("Annet\n");
+                writer.write("Steinsopp" + newLine);
+                writer.write("Fluesopp" + newLine);
+                writer.write("Kantarell" + newLine);
+                writer.write("Blåbær" + newLine);
+                writer.write("Jordbær" + newLine);
+                writer.write("Bringebær" + newLine);
+                writer.write("Tyttebær" + newLine);
+                writer.write("Annet" + newLine);
                 writer.close();
             }
 
@@ -216,16 +217,16 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             if(!file.exists()) {
                 file.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                writer.write("\n");
-                writer.write("Skogsbeite\n");
-                writer.write("Fjellbeite\n");
-                writer.write("Kysthei\n");
-                writer.write("Myr\n");
-                writer.write("Barskog\n");
-                writer.write("Løvskog\n");
-                writer.write("Fjellskog\n");
-                writer.write("Snaufjellet\n");
-                writer.write("Annet\n");
+                writer.write(newLine);
+                writer.write("Skogsbeite" + newLine);
+                writer.write("Fjellbeite" + newLine);
+                writer.write("Kysthei" + newLine);
+                writer.write("Myr" + newLine);
+                writer.write("Barskog" + newLine);
+                writer.write("Løvskog" + newLine);
+                writer.write("Fjellskog" + newLine);
+                writer.write("Snaufjellet" + newLine);
+                writer.write("Annet" + newLine);
                 writer.close();
             }
 
@@ -243,16 +244,16 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             if(!file.exists()) {
                 file.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                writer.write("Gran\n");
-                writer.write("Furu\n");
-                writer.write("Bjørk\n");
-                writer.write("Selje\n");
-                writer.write("Osp\n");
-                writer.write("Rogn\n");
-                writer.write("Or\n");
-                writer.write("Vier\n");
-                writer.write("Einer\n");
-                writer.write("Annet\n");
+                writer.write("Gran" + newLine);
+                writer.write("Furu" + newLine);
+                writer.write("Bjørk" + newLine);
+                writer.write("Selje" + newLine);
+                writer.write("Osp" + newLine);
+                writer.write("Rogn" + newLine);
+                writer.write("Or" + newLine);
+                writer.write("Vier" + newLine);
+                writer.write("Einer" + newLine);
+                writer.write("Annet" + newLine);
                 writer.close();
             }
 
@@ -395,7 +396,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             if(editIndex != -1) {
                 editIndex = -1;
                 tvNextID.setText(String.valueOf(nextId));
-                btnEditSample.setEnabled(true);
                 return;
             }
 
@@ -444,7 +444,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
             btnBack.setText(R.string.cancel);
             btnNextId.setText(R.string.update);
-            btnEditSample.setEnabled(false);
         }
     };
 
@@ -543,7 +542,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String line = dataID + "|" + sNextID + "|" + collector + "|" + collectorAddress + "|" + projName + "|"
                         + strDateISO + "|" + currLat + "|" + currLon + "|"  + aboveSea + "|" + sampleType + "|" + location + "|"
                         + locationType + "|" + community + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|" + density + "|"
-                        + nSats + "|" + nAcc + "|" + receiver + "|" + sampleComment + "\n";
+                        + nSats + "|" + nAcc + "|" + receiver + "|" + sampleComment + newLine;
 
                 if(editIndex == -1) {
                     File file = new File(projDir, tvProjName.getText().toString() + ".txt");
@@ -569,7 +568,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                         if(idx == editIndex + 1)
                             wr.write(line);
                         else
-                            wr.write(l);
+                            wr.write(l +  newLine);
                         idx++;
                     }
                     rd.close();
@@ -581,7 +580,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                     Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + sNextID + " oppdatert", Toast.LENGTH_LONG).show();
                     editIndex = -1;
                     btnNextId.setText(R.string.store_next_sample);
-                    btnEditSample.setEnabled(true);
                     btnBack.setText(R.string.back);
                 }
 
@@ -620,23 +618,11 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
             try {
 
-                nextId = 1;
-                File file = new File(projDir, tvProjName.getText().toString() + ".txt");
-                String line;
-                BufferedReader rd = new BufferedReader(new FileReader(file));
-                rd.readLine(); // skip file guid
-                while ((line = rd.readLine()) != null) {
-                    String[] items = line.split("\\|", -1);
-                    int sid = Integer.parseInt(items[1]);
-                    if(sid > nextId)
-                        nextId = sid + 1;
-                }
-                rd.close();
-
-                /*LineNumberReader lnr = new LineNumberReader(new FileReader(new File(projDir, tvProjName.getText().toString() + ".txt")));
+                LineNumberReader lnr = new LineNumberReader(new FileReader(new File(projDir, tvProjName.getText().toString() + ".txt")));
                 lnr.skip(Long.MAX_VALUE);
                 nextId = lnr.getLineNumber();
-                lnr.close();*/
+                lnr.close();
+
             } catch (Exception e) {
                 Toast.makeText(SampleRegistrationActivity.this, ErrorString(e.getMessage()), Toast.LENGTH_LONG).show();
             }
@@ -670,7 +656,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 File file = new File (projDir, strNewProj + ".txt");
                 try {
                     FileOutputStream out = new FileOutputStream(file);
-                    String  strUID = UUID.randomUUID().toString() + "\n";
+                    String  strUID = UUID.randomUUID().toString() + newLine;
                     out.write(strUID.getBytes());
                     out.flush();
                     out.close();
