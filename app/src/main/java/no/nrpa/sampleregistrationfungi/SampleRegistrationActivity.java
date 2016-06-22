@@ -398,7 +398,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 btnEditSample.setEnabled(true);
                 return;
             }
-            
+
             editIndex = -1;
             switcher.showPrevious();
         }
@@ -500,7 +500,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 String currLon = tvCurrLon.getText().toString().trim();
                 String aboveSea = tvCurrentAboveSeaLevel.getText().toString().trim();
                 String dataID = tvDataID.getText().toString().trim();
-                String nextID = tvNextID.getText().toString().trim();
+                String sNextID = tvNextID.getText().toString().trim();
                 String location = etNextLocation.getText().toString().trim();
                 String locationType = etNextLocationType.getSelectedItem().toString().trim();
                 String community = etNextCommunity.getText().toString().trim();
@@ -540,7 +540,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                     return;
                 }
 
-                String line = dataID + "|" + nextID + "|" + collector + "|" + collectorAddress + "|" + projName + "|"
+                String line = dataID + "|" + sNextID + "|" + collector + "|" + collectorAddress + "|" + projName + "|"
                         + strDateISO + "|" + currLat + "|" + currLon + "|"  + aboveSea + "|" + sampleType + "|" + location + "|"
                         + locationType + "|" + community + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|" + density + "|"
                         + nSats + "|" + nAcc + "|" + receiver + "|" + sampleComment + "\n";
@@ -551,9 +551,8 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                     out.write(line.getBytes());
                     out.flush();
                     out.close();
+                    Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + sNextID + " lagret som " + sampleType, Toast.LENGTH_LONG).show();
                     nextId++;
-
-                    Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + nextID + " lagret som " + sampleType, Toast.LENGTH_LONG).show();
                 }
                 else {
                     String filename = tvProjName.getText().toString() + ".txt";
@@ -579,7 +578,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                     file.delete();
                     newFile.renameTo(file);
 
-                    Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + nextID + " oppdatert", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SampleRegistrationActivity.this, "ID " + dataID + " " + sNextID + " oppdatert", Toast.LENGTH_LONG).show();
                     editIndex = -1;
                     btnNextId.setText(R.string.store_next_sample);
                     btnEditSample.setEnabled(true);
@@ -620,10 +619,24 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             }
 
             try {
-                LineNumberReader lnr = new LineNumberReader(new FileReader(new File(projDir, tvProjName.getText().toString() + ".txt")));
+
+                nextId = 1;
+                File file = new File(projDir, tvProjName.getText().toString() + ".txt");
+                String line;
+                BufferedReader rd = new BufferedReader(new FileReader(file));
+                rd.readLine(); // skip file guid
+                while ((line = rd.readLine()) != null) {
+                    String[] items = line.split("\\|", -1);
+                    int sid = Integer.parseInt(items[1]);
+                    if(sid > nextId)
+                        nextId = sid + 1;
+                }
+                rd.close();
+
+                /*LineNumberReader lnr = new LineNumberReader(new FileReader(new File(projDir, tvProjName.getText().toString() + ".txt")));
                 lnr.skip(Long.MAX_VALUE);
                 nextId = lnr.getLineNumber();
-                lnr.close();
+                lnr.close();*/
             } catch (Exception e) {
                 Toast.makeText(SampleRegistrationActivity.this, ErrorString(e.getMessage()), Toast.LENGTH_LONG).show();
             }
