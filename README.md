@@ -44,10 +44,10 @@ GPL3
 __Screenshots:__
 
 
-![sampleregistrationfungi01](https://cloud.githubusercontent.com/assets/1276717/16264496/4c331346-387a-11e6-8794-283d2dddde7e.png)
+![sampleregistrationfungi001](https://cloud.githubusercontent.com/assets/1276717/16264675/36d20038-387b-11e6-8f3e-b39b55355540.png)
 
 
-![sampleregistrationfungi02](https://cloud.githubusercontent.com/assets/1276717/16264499/4fcde29c-387a-11e6-99d3-3084664cfd73.png)
+![sampleregistrationfungi002](https://cloud.githubusercontent.com/assets/1276717/16264678/3bf93e14-387b-11e6-9d80-44f58aec487f.png)
 
 
-![sampleregistrationfungi03](https://cloud.githubusercontent.com/assets/1276717/16264501/52d8c600-387a-11e6-89cd-d6dcbe49df76.png)
+![sampleregistrationfungi003](https://cloud.githubusercontent.com/assets/1276717/16264683/41781158-387b-11e6-84f9-2fa639ea80c1.png)
