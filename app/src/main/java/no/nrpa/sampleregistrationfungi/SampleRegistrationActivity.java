@@ -49,6 +49,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,11 +86,13 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     private LocationManager locManager;
     private String locProvider;
     private boolean providerEnabled;
-    private TextView tvProjName, tvCurrProvider, tvCurrFix, tvCurrAcc, tvCurrGPSDate, tvCurrLat, tvCurrLon, tvCurrentAboveSeaLevel, tvDataID, tvNextID;
+    private TextView tvProjName, tvCurrProvider, tvCurrFix, tvCurrAcc, tvCurrGPSDate, tvCurrLat, tvCurrLon,
+            tvCurrentAboveSeaLevel, tvDataID, tvNextID, tvSampleTitle, tvEditing;
     private EditText etNextGrass, etNextHerbs, etNextHeather, etNextReceiver, etNextComment, etNextLocation;
     private AutoCompleteTextView etNextSampleType, etNextCommunity;
     private Spinner etNextLocationType, etNextDensity;
     private MultiSpinner etNextAdjacentHardwoods;
+    private ScrollView svSamples;
     private File projDir, cfgDir;
     private int nextId;
     private String collector, collectorAddress, dataId;
@@ -121,18 +124,29 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             int winWidth = displaymetrics.widthPixels;
             int winHeight = displaymetrics.heightPixels;
 
+            svSamples = (ScrollView)findViewById(R.id.svSamples);
+
             int cliWidth = winWidth - 32;
             btnBack = (Button)findViewById(R.id.btnBack);
-            btnBack.setWidth(cliWidth / 3);
+            btnBack.setWidth(cliWidth / 2);
             btnBack.setOnClickListener(btnBack_onClick);
+
+            btnNextId = (Button)findViewById(R.id.btnNextId);
+            btnNextId.setWidth(cliWidth / 2);
+            btnNextId.setOnClickListener(btnNextID_onClick);
+
+            tvProjName = (TextView) findViewById(R.id.tvProjName);
+            tvProjName.setWidth((cliWidth / 3) * 2);
 
             btnEditSample = (Button)findViewById(R.id.btnEditSample);
             btnEditSample.setWidth(cliWidth / 3);
             btnEditSample.setOnClickListener(btnEditSample_onClick);
 
-            btnNextId = (Button)findViewById(R.id.btnNextId);
-            btnNextId.setWidth(cliWidth / 3);
-            btnNextId.setOnClickListener(btnNextID_onClick);
+            tvSampleTitle = (TextView)findViewById(R.id.tvSampleTitle);
+            tvSampleTitle.setWidth((cliWidth / 3) * 2);
+
+            tvEditing = (TextView)findViewById(R.id.tvEditing);
+            tvEditing.setText("");
 
             ActionBar actionBar = getSupportActionBar();
             if(actionBar != null) {
@@ -165,7 +179,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
             populateProjects();
 
-            tvProjName = (TextView) findViewById(R.id.tvProjName);
             tvCurrProvider = (TextView) findViewById(R.id.tvCurrentProvider);
             tvCurrFix = (TextView) findViewById(R.id.tvCurrentFix);
             tvCurrAcc = (TextView) findViewById(R.id.tvCurrentAcc);
@@ -230,6 +243,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 writer.close();
             }
 
+            locationTypes.clear();
             buf = new BufferedReader(new FileReader(file));
             while ((line = buf.readLine()) != null) {
                 locationTypes.add(line);
@@ -257,6 +271,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 writer.close();
             }
 
+            adjacentHardwoods.clear();
             buf = new BufferedReader(new FileReader(file));
             while ((line = buf.readLine()) != null) {
                 adjacentHardwoods.add(line);
@@ -269,6 +284,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                 }
             });
 
+            densityList.clear();
             densityList.add("");
             densityList.add("Lite");
             densityList.add("Middels");
@@ -391,6 +407,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
             btnBack.setText(R.string.back);
             btnNextId.setText(R.string.store_next_sample);
+            tvEditing.setText("");
             etNextSampleType.setText("");
 
             if(editIndex != -1) {
@@ -440,7 +457,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(SampleRegistrationActivity.this);
-            builder.setTitle(R.string.select_sample).setItems(samples, selectSampleListener);
+            builder.setTitle(R.string.select_sample_for_edit).setItems(samples, selectSampleListener);
             builder.show();
         }
     };
@@ -478,6 +495,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
             btnBack.setText(R.string.cancel);
             btnNextId.setText(R.string.update);
+            tvEditing.setText(" (redigering...)");
 
             Toast.makeText(SampleRegistrationActivity.this, "Prøve valgt: " + parts[1] + " - " + parts[9], Toast.LENGTH_LONG).show();
         }
@@ -580,11 +598,12 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                     editIndex = -1;
                     btnNextId.setText(R.string.store_next_sample);
                     btnBack.setText(R.string.back);
+                    tvEditing.setText("");
                 }
 
                 tvNextID.setText(String.valueOf(nextId));
-
                 etNextSampleType.setText("");
+                svSamples.fullScroll(ScrollView.FOCUS_UP);
 
             } catch (Exception e) {
                 Toast.makeText(SampleRegistrationActivity.this, ErrorString(e.getMessage()), Toast.LENGTH_LONG).show();

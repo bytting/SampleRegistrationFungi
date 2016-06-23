@@ -35,4 +35,5 @@
     <string name="store_next_sample">Lagre prøve</string>
     <string name="edit_sample">Rediger prøve</string>
     <string name="select_sample">Velg prøve</string>
+    <string name="select_sample_for_edit">Velg prøve for redigering</string>
 </resources>
