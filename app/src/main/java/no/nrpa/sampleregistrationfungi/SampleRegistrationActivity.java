@@ -101,6 +101,7 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
     private int nSatellites;
     private float accuracy;
 
+    private boolean modCoords = false;
     private int editIndex = -1;
     private List<String> editSampleArray = new ArrayList<String>();
     ArrayList<String> locationTypes = new ArrayList<String>();
@@ -219,7 +220,10 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             String line;
             BufferedReader buf = new BufferedReader(new FileReader(file));
             while ((line = buf.readLine()) != null) {
-                sampleTypes.add(line);
+                String l = line.trim();
+                if(l.isEmpty())
+                    continue;
+                sampleTypes.add(l);
             }
             buf.close();
 
@@ -230,7 +234,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             if(!file.exists()) {
                 file.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                writer.write(newLine);
                 writer.write("Skogsbeite" + newLine);
                 writer.write("Fjellbeite" + newLine);
                 writer.write("Kysthei" + newLine);
@@ -244,9 +247,13 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             }
 
             locationTypes.clear();
+            locationTypes.add("");
             buf = new BufferedReader(new FileReader(file));
             while ((line = buf.readLine()) != null) {
-                locationTypes.add(line);
+                String l = line.trim();
+                if(l.isEmpty())
+                    continue;
+                locationTypes.add(l);
             }
             buf.close();
 
@@ -274,7 +281,10 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             adjacentHardwoods.clear();
             buf = new BufferedReader(new FileReader(file));
             while ((line = buf.readLine()) != null) {
-                adjacentHardwoods.add(line);
+                String l = line.trim();
+                if(l.isEmpty())
+                    continue;
+                adjacentHardwoods.add(l);
             }
             buf.close();
 
@@ -299,12 +309,15 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             if(file.exists()) {
                 buf = new BufferedReader(new FileReader(file));
                 while ((line = buf.readLine()) != null) {
-                    communities.add(line);
+                    String l = line.trim();
+                    if(l.isEmpty())
+                        continue;
+                    communities.add(l);
                 }
                 buf.close();
             }
 
-            ArrayAdapter<String> adapterCommunities = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, communities);
+            ArrayAdapter<String> adapterCommunities = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, communities);
             adapterCommunities.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             etNextCommunity.setAdapter(adapterCommunities);
 
@@ -439,9 +452,12 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
 
                 buf = new BufferedReader(new FileReader(file));
                 buf.readLine();
-                while ((line = buf.readLine()) != null)
-                    editSampleArray.add(line);
-
+                while ((line = buf.readLine()) != null) {
+                    String l = line.trim();
+                    if (l.isEmpty())
+                        continue;
+                    editSampleArray.add(l);
+                }
                 buf.close();
 
             } catch (Exception e) {
@@ -459,6 +475,21 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             AlertDialog.Builder builder = new AlertDialog.Builder(SampleRegistrationActivity.this);
             builder.setTitle(R.string.select_sample_for_edit).setItems(samples, selectSampleListener);
             builder.show();
+
+            AlertDialog.Builder yesNoDiag = new AlertDialog.Builder(SampleRegistrationActivity.this);
+            yesNoDiag.setMessage("Vi du oppdatere koordinatene også?");
+            yesNoDiag.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    modCoords = true;
+                }
+            }).setNegativeButton("Nei", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    modCoords = false;
+                }
+            });
+            yesNoDiag.show();
         }
     };
 
@@ -582,10 +613,24 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
                     BufferedReader rd = new BufferedReader(new FileReader(file));
                     BufferedWriter wr = new BufferedWriter(new FileWriter(newFile));
                     while ((l = rd.readLine()) != null) {
-                        if(idx == editIndex + 1)
+                        if(idx == editIndex + 1) {
+                            if(!modCoords) {
+                                String[] parts = l.split("\\|", -1);
+                                String modLat = parts[6];
+                                String modLon = parts[7];
+                                String modAlt = parts[8];
+
+                                line = dataID + "|" + sNextID + "|" + collector + "|" + collectorAddress + "|" + projName + "|"
+                                        + strDateISO + "|" + modLat + "|" + modLon + "|"  + modAlt + "|" + sampleType + "|" + location + "|"
+                                        + locationType + "|" + community + "|" + adjacentHardwoods + "|" + grass + "|" + herbs + "|" + heather + "|" + density + "|"
+                                        + nSats + "|" + nAcc + "|" + receiver + "|" + sampleComment + newLine;
+                            }
+
                             wr.write(line);
-                        else
-                            wr.write(l +  newLine);
+                        }
+                        else {
+                            wr.write(l + newLine);
+                        }
                         idx++;
                     }
                     rd.close();

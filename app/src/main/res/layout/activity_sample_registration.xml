@@ -323,6 +323,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
+                    android:maxLength="120"
+                    android:singleLine="true"
                     android:textColor="#073642" />
 
                 <TextView
