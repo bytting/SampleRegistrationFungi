@@ -475,21 +475,6 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             AlertDialog.Builder builder = new AlertDialog.Builder(SampleRegistrationActivity.this);
             builder.setTitle(R.string.select_sample_for_edit).setItems(samples, selectSampleListener);
             builder.show();
-
-            AlertDialog.Builder yesNoDiag = new AlertDialog.Builder(SampleRegistrationActivity.this);
-            yesNoDiag.setMessage("Vi du oppdatere koordinatene også?");
-            yesNoDiag.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    modCoords = true;
-                }
-            }).setNegativeButton("Nei", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    modCoords = false;
-                }
-            });
-            yesNoDiag.show();
         }
     };
 
@@ -528,7 +513,22 @@ public class SampleRegistrationActivity extends AppCompatActivity implements Loc
             btnNextId.setText(R.string.update);
             tvEditing.setText(" (redigering...)");
 
-            Toast.makeText(SampleRegistrationActivity.this, "Prøve valgt: " + parts[1] + " - " + parts[9], Toast.LENGTH_LONG).show();
+            //Toast.makeText(SampleRegistrationActivity.this, "Prøve valgt: " + parts[1] + " - " + parts[9], Toast.LENGTH_LONG).show();
+
+            AlertDialog.Builder yesNoDiag = new AlertDialog.Builder(SampleRegistrationActivity.this);
+            yesNoDiag.setMessage("Vi du oppdatere koordinatene også?");
+            yesNoDiag.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    modCoords = true;
+                }
+            }).setNegativeButton("Nei", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    modCoords = false;
+                }
+            });
+            yesNoDiag.show();
         }
     };
 
